@@ -1,18 +1,16 @@
-// 1. THEME SWITCHER LOGIC
-const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+// 1. THEME SWITCHER LOGIC (Updated for 3D Knob)
+const themeToggle = document.querySelector('#theme-toggle');
 const currentTheme = localStorage.getItem('theme');
 
-// Check for saved user preference
+// Apply saved theme on load
 if (currentTheme) {
     document.documentElement.setAttribute('data-theme', currentTheme);
-
     if (currentTheme === 'light') {
-        toggleSwitch.checked = true;
+        themeToggle.checked = true;
     }
 }
 
-// Function to switch theme
-function switchTheme(e) {
+themeToggle.addEventListener('change', (e) => {
     if (e.target.checked) {
         document.documentElement.setAttribute('data-theme', 'light');
         localStorage.setItem('theme', 'light');
@@ -20,49 +18,70 @@ function switchTheme(e) {
         document.documentElement.setAttribute('data-theme', 'dark');
         localStorage.setItem('theme', 'dark');
     }
-}
-
-// Event Listener for the toggle
-toggleSwitch.addEventListener('change', switchTheme, false);
-
-
-// 2. INITIALIZE 3D TILT (Vanilla Tilt)
-// This targets your Project Cards, Buttons, AND the new Profile Frame
-VanillaTilt.init(document.querySelectorAll("[data-tilt]"), {
-    max: 15,            // Max tilt rotation
-    speed: 400,         // Speed of the enter/exit transition
-    glare: true,        // Adds the "glass" reflection
-    "max-glare": 0.3,   // Max opacity of glare
-    gyroscope: true,    // Mobile support
-    scale: 1.05         // Slight zoom on hover
 });
 
+// 2. CONTACT MODAL LOGIC
+const modal = document.getElementById('contact-modal');
+const closeBtn = document.querySelector('.close-modal');
+const contactButtons = document.querySelectorAll('#nav-contact-btn, #footer-contact-btn');
 
-// 3. SMOOTH SCROLLING
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
-        });
+// Open Modal
+contactButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        modal.classList.add('active');
     });
 });
 
-
-// 4. DYNAMIC BACKGROUND PARALLAX (Optional but Cool)
-// This makes the "Scissors" and "VHS Text" move slightly when you scroll
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const scissors = document.querySelector('.scissors');
-    const vhsText = document.querySelector('.vhs-text');
-    
-    // Parallax speed calculation
-    if(scissors) scissors.style.transform = `translateY(${scrolled * 0.2}px) rotate(-20deg)`;
-    if(vhsText) vhsText.style.transform = `translateY(${scrolled * 0.1}px) skewX(-15deg)`;
+// Close Modal (via X or clicking outside)
+closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+window.addEventListener('click', (e) => {
+    if (e.target === modal) modal.classList.remove('active');
 });
 
+// 3. COPY TO CLIPBOARD HELPER
+function copyText(elementId) {
+    const text = document.getElementById(elementId).innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        const btn = event.target;
+        const originalText = btn.innerText;
+        btn.innerText = "COPIED!";
+        btn.style.borderColor = "var(--accent)";
+        
+        setTimeout(() => {
+            btn.innerText = originalText;
+            btn.style.borderColor = "";
+        }, 2000);
+    });
+}
 
-// 5. DEVELOPER SIGNATURE
+// 4. INITIALIZE 3D TILT (Vanilla Tilt)
+VanillaTilt.init(document.querySelectorAll("[data-tilt]"), {
+    max: 10,
+    speed: 600,
+    glare: true,
+    "max-glare": 0.2,
+    gyroscope: true,
+    scale: 1.02
+});
+
+// 5. CINEMATIC BACKGROUND PARALLAX
+window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const scissors = document.querySelector('.scissor-icon');
+    const timecode = document.querySelector('.timecode');
+    const skewCont = document.querySelector('.skew-container');
+    
+    // Scissor follows scroll slowly
+    if(scissors) scissors.style.transform = `translateY(${scrolled * 0.1}px) rotate(-15deg)`;
+    
+    // Timecode floats up
+    if(timecode) timecode.style.transform = `translateY(${scrolled * -0.2}px)`;
+    
+    // Subtle shift in the background skew
+    if(skewCont) skewCont.style.transform = `skewY(-5deg) translateY(${scrolled * 0.05}px)`;
+});
+
+// 6. DEVELOPER SIGNATURE
 console.log("%c YOHANNES SHIFERAW %c VIDEO EDITOR ", 
             "background: #00f2ff; color: #000; font-weight: bold; padding: 5px;", 
             "background: #333; color: #fff; padding: 5px;");
