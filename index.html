@@ -1,34 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yohannes Shiferaw | Video Editor & Visual Storyteller</title>
+    <title>Yohannes Shiferaw | Video Editor</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Space+Mono&display=swap" rel="stylesheet">
 </head>
 <body>
 
+    <div class="background-decor">
+        <div class="vhs-overlay"></div>
+        <div class="skew-morphic-icon scissors">✂</div>
+        <div class="skew-morphic-icon vhs-text">PLAY ▶ 00:00:26</div>
+    </div>
+
     <div class="watermark-logo">
-        <video autoplay muted loop playsinline>
-            <source src="yohannes-logo-watermark.webm" type="video/webm">
-        </video>
+        <video autoplay muted loop playsinline src="your-logo.webm"></video>
     </div>
 
     <nav class="glass-nav">
         <div class="nav-brand">YOHANNES <span class="thin">SHIFERAW</span></div>
-        <div class="nav-links">
-            <a href="#projects" class="tilt-button" data-tilt data-tilt-scale="1.1">PROJECTS</a>
-            <a href="#contact" class="tilt-button" data-tilt data-tilt-scale="1.1">CONTACT</a>
+        
+        <div class="nav-right">
+            <div class="theme-switch-wrapper">
+                <label class="theme-switch" for="checkbox">
+                    <input type="checkbox" id="checkbox" />
+                    <div class="slider">
+                        <span class="icon sun">☀️</span>
+                        <span class="icon moon">🌙</span>
+                    </div>
+                </label>
+            </div>
+            
+            <div class="nav-links">
+                <a href="#projects" class="tilt-button" data-tilt>PROJECTS</a>
+                <a href="#contact" class="tilt-button" data-tilt>CONTACT</a>
+            </div>
         </div>
     </nav>
 
     <main>
         <section class="hero">
+            <div class="profile-frame" data-tilt data-tilt-perspective="1000">
+                <div class="profile-glow"></div>
+                <img src="https://github.com/your-username.png" alt="Yohannes Shiferaw" class="profile-img">
+                <div class="scanline"></div>
+            </div>
+
             <div class="hero-content">
                 <h1 class="main-title">YOHANNES <span class="glow-text">SHIFERAW</span></h1>
-                <p class="subtitle">Visual Editor • Post-Production Specialist • Storyteller</p>
-                <div class="scroll-indicator">SCROLL TO VIEW REEL</div>
+                <p class="subtitle">Visual Editor • Post-Production • 2026 Reel</p>
             </div>
         </section>
 
@@ -36,59 +58,26 @@
             
             <div class="project-card-container">
                 <div class="morphic-character char-long"></div> 
-                <div class="project-card" data-tilt data-tilt-glare data-tilt-max-glare="0.3">
+                <div class="project-card" data-tilt>
                     <div class="video-container">
-                        <img src="long-form-thumb.jpg" alt="Documentary Work">
+                        <img src="thumb1.jpg" alt="Project 1">
                         <div class="play-overlay"><span>VIEW FILM</span></div>
                     </div>
                     <div class="project-info">
                         <span class="tag">LONG FORM</span>
-                        <h3>Cinematic Documentary</h3>
-                        <p>A deep dive into narrative pacing and color grading.</p>
+                        <h3>Narrative Sequence</h3>
                     </div>
                 </div>
             </div>
 
-            <div class="project-card-container">
-                <div class="morphic-character char-short-1"></div>
-                <div class="project-card" data-tilt data-tilt-glare data-tilt-max-glare="0.3">
-                    <div class="video-container">
-                        <img src="short-form-1.jpg" alt="Commercial Edit">
-                        <div class="play-overlay"><span>VIEW EDIT</span></div>
-                    </div>
-                    <div class="project-info">
-                        <span class="tag">SHORT FORM</span>
-                        <h3>High-Energy Brand Ad</h3>
-                        <p>Fast-paced cuts and custom sound design for social media.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="project-card-container">
-                <div class="morphic-character char-short-2"></div>
-                <div class="project-card" data-tilt data-tilt-glare data-tilt-max-glare="0.3">
-                    <div class="video-container">
-                        <img src="short-form-2.jpg" alt="Social Content">
-                        <div class="play-overlay"><span>VIEW EDIT</span></div>
-                    </div>
-                    <div class="project-info">
-                        <span class="tag">SHORT FORM</span>
-                        <h3>Visual Effects Showcase</h3>
-                        <p>Dynamic transitions and seamless VFX integration.</p>
-                    </div>
-                </div>
-            </div>
-
-        </section>
+            </section>
     </main>
 
     <footer id="contact">
-        <div class="contact-card" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.5">
+        <div class="contact-card" data-tilt>
             <h2>Ready to start your next project?</h2>
-            <p>Currently accepting commissions for 2026.</p>
             <a href="mailto:yohannes@email.com" class="email-btn">GET IN TOUCH</a>
         </div>
-        <p class="copyright">© 2026 Yohannes Shiferaw. All rights reserved.</p>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
