@@ -1,143 +1,172 @@
-/* --- THEME VARIABLES --- */
-:root[data-theme="dark"] {
+/* --- 1. THEME VARIABLES & BASICS --- */
+:root {
+    /* Default Dark Theme (The "Editor's Suite" Look) */
     --bg-primary: #0a0a0b;
     --text-main: #ffffff;
-    --accent: #00f2ff;
-    --glass: rgba(255, 255, 255, 0.03);
+    --text-muted: #888888;
+    --accent: #00f2ff; /* Cyan for that sci-fi look */
+    
+    /* Glassmorphism Variables */
+    --glass: rgba(255, 255, 255, 0.05);
     --glass-border: rgba(255, 255, 255, 0.1);
-    --vhs-opacity: 0.15;
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    
+    /* Knob Specifics */
+    --knob-bg: #1a1a1a;
+    --knob-shadow-light: rgba(255,255,255,0.1);
+    --knob-shadow-dark: rgba(0,0,0,0.5);
 }
 
-:root[data-theme="light"] {
-    --bg-primary: #f4f4f7;
+/* Light Theme Overrides */
+[data-theme="light"] {
+    --bg-primary: #e0e0e0;
     --text-main: #1a1a1b;
-    --accent: #6200ea;
-    --glass: rgba(0, 0, 0, 0.03);
-    --glass-border: rgba(0, 0, 0, 0.1);
-    --vhs-opacity: 0.05;
+    --text-muted: #555555;
+    --accent: #6200ea; /* Deep Purple */
+    
+    --glass: rgba(255, 255, 255, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.4);
+    
+    --knob-bg: #e0e0e0;
+    --knob-shadow-light: #ffffff;
+    --knob-shadow-dark: #bebebe;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; transition: background 0.4s ease, color 0.4s ease; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
     background-color: var(--bg-primary);
     color: var(--text-main);
     font-family: 'Inter', sans-serif;
-    overflow-x: hidden;
+    overflow-x: hidden; /* Prevent horizontal scroll from skew */
+    transition: background-color 0.5s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
-/* --- 1. CINEMATIC VHS & SCISSORS BACKGROUND --- */
-.background-decor {
+/* --- 2. CINEMATIC BACKGROUND (The VHS/Skew Effect) --- */
+.background-stage {
     position: fixed;
     inset: 0;
-    z-index: -2;
+    z-index: -1;
+    overflow: hidden;
     pointer-events: none;
 }
 
-.vhs-text {
+/* The Grainy Noise Overlay */
+.vhs-static-overlay {
     position: absolute;
-    top: 10%;
-    left: 5%;
-    font-family: 'Space Mono', monospace;
-    font-size: 1.2rem;
-    opacity: var(--vhs-opacity);
-    transform: skewX(-15deg);
+    top: -50%; left: -50%; width: 200%; height: 200%;
+    background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+');
+    opacity: 0.4;
+    animation: grain 8s steps(10) infinite;
 }
 
-.scissors {
-    position: absolute;
-    bottom: 10%;
-    right: 5%;
-    font-size: 8rem;
-    opacity: var(--vhs-opacity);
-    transform: rotate(-20deg) skewY(10deg);
-}
-
-/* --- 2. THEME TOGGLE STYLING --- */
-.theme-switch-wrapper { display: flex; align-items: center; margin-right: 20px; }
-.theme-switch {
-    display: inline-block;
-    height: 34px;
-    position: relative;
-    width: 60px;
-}
-.theme-switch input { display: none; }
-.slider {
-    background-color: #ccc;
-    bottom: 0;
-    cursor: pointer;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    transition: .4s;
-    border-radius: 34px;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    padding: 5px;
-}
-.slider:before {
-    content: "";
-    background-color: white;
-    height: 26px;
-    width: 26px;
-    position: absolute;
-    left: 4px;
-    bottom: 4px;
-    transition: .4s;
-    border-radius: 50%;
-    z-index: 2;
-}
-input:checked + .slider { background-color: var(--accent); }
-input:checked + .slider:before { transform: translateX(26px); }
-
-/* --- 3. STYLISH PROFILE FRAME --- */
-.profile-frame {
-    position: relative;
-    width: 220px;
-    height: 220px;
-    margin: 0 auto 30px;
-    border-radius: 20% 70% 50% 50% / 30% 30% 70% 70%; /* Morphic shape */
-    overflow: hidden;
-    border: 2px solid var(--accent);
-    box-shadow: 0 0 40px rgba(0, 242, 255, 0.2);
-}
-
-.profile-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: grayscale(100%) contrast(110%);
-}
-
-.profile-frame:hover .profile-img { filter: grayscale(0%); }
-
-.scanline {
+/* The "Cut" Container */
+.skew-container {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.3) 51%);
-    background-size: 100% 4px;
-    pointer-events: none;
-    animation: scan 10s linear infinite;
+    transform: skewY(-5deg); /* The Signature Editor Look */
+    transform-origin: 0;
+    background: linear-gradient(120deg, transparent 40%, var(--glass) 40%, transparent 60%);
 }
 
-@keyframes scan { from { background-position: 0 0; } to { background-position: 0 100%; } }
+.scissor-icon {
+    position: absolute;
+    bottom: -10%;
+    right: -5%;
+    width: 60vh; /* Massive background element */
+    height: 60vh;
+    opacity: 0.03; /* Very subtle */
+    color: var(--text-main);
+    transform: rotate(-15deg);
+}
 
-/* --- 4. NAVIGATION & HERO --- */
+.timecode {
+    position: absolute;
+    top: 20%; right: 10%;
+    font-family: 'Space Mono', monospace;
+    color: var(--accent);
+    opacity: 0.6;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+}
+
+/* --- 3. NAVIGATION & THE 3D KNOB --- */
 .glass-nav {
     display: flex;
     justify-content: space-between;
-    padding: 20px 5%;
+    align-items: center;
+    padding: 1rem 5%;
     position: fixed;
     top: 0; width: 100%;
-    background: var(--glass);
-    backdrop-filter: blur(10px);
     z-index: 100;
+    
+    /* True Glassmorphism */
+    background: var(--glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--glass-border);
 }
 
-.nav-right { display: flex; align-items: center; }
+.nav-brand { font-weight: 900; font-size: 1.2rem; letter-spacing: -1px; }
+.nav-brand .thin { font-weight: 300; }
 
+.nav-right { display: flex; align-items: center; gap: 2rem; }
+
+/* -- The 3D Knob Switch -- */
+.knob-wrapper input { display: none; }
+
+.knob {
+    width: 50px;
+    height: 50px;
+    background: var(--knob-bg);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    
+    /* The 3D Pop Effect */
+    box-shadow: 
+        6px 6px 10px var(--knob-shadow-dark), 
+        -6px -6px 10px var(--knob-shadow-light);
+    transition: all 0.3s ease;
+}
+
+/* Active State (Pressed In / Dark Mode) */
+#theme-toggle:checked + .knob {
+    box-shadow: 
+        inset 6px 6px 10px var(--knob-shadow-dark), 
+        inset -6px -6px 10px var(--knob-shadow-light);
+}
+
+.indicator {
+    width: 4px;
+    height: 16px;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    box-shadow: 0 0 10px var(--accent);
+}
+
+#theme-toggle:checked + .knob .indicator {
+    transform: rotate(180deg);
+    background: #ff0055; /* Changes color when "recording" (dark mode) */
+    box-shadow: 0 0 10px #ff0055;
+}
+
+.nav-links a, .nav-links button {
+    text-decoration: none;
+    color: var(--text-main);
+    font-weight: 700;
+    font-size: 0.9rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+}
+
+/* --- 4. HERO SECTION --- */
 .hero {
     height: 100vh;
     display: flex;
@@ -145,18 +174,178 @@ input:checked + .slider:before { transform: translateX(26px); }
     justify-content: center;
     align-items: center;
     text-align: center;
+    padding-top: 60px;
 }
 
-.glow-text {
-    color: var(--accent);
-    text-shadow: 0 0 20px var(--accent);
+.profile-frame {
+    width: 200px;
+    height: 200px;
+    margin-bottom: 2rem;
+    position: relative;
+    border-radius: 30px; /* Squircle */
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    border: 1px solid var(--accent);
 }
 
-/* --- 5. PROJECT CARDS (Updated for Light/Dark) --- */
+.profile-img { width: 100%; height: 100%; object-fit: cover; }
+
+.scanline {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to bottom, transparent 50%, rgba(0,242,255,0.1) 51%);
+    background-size: 100% 4px;
+    pointer-events: none;
+}
+
+.main-title { font-size: 4rem; font-weight: 900; line-height: 1; letter-spacing: -2px; }
+.glow-text { color: var(--accent); text-shadow: 0 0 30px var(--accent); }
+.subtitle { font-family: 'Space Mono', monospace; color: var(--text-muted); margin-top: 1rem; }
+
+/* --- 5. PROJECTS GRID --- */
+.project-grid { padding: 5rem 10%; }
+.project-card-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+
 .project-card {
     background: var(--glass);
     border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 10px;
+    transition: transform 0.3s ease;
+}
+
+.video-container {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 16/9;
+}
+
+.video-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+.project-card:hover .video-container img { transform: scale(1.05); }
+
+.play-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.project-card:hover .play-overlay { opacity: 1; }
+.play-overlay span {
+    border: 1px solid white; color: white; padding: 0.5rem 1rem;
+    font-family: 'Space Mono', monospace; letter-spacing: 2px;
+}
+
+.project-info { padding: 1rem 0.5rem; }
+.tag { font-size: 0.7rem; color: var(--accent); border: 1px solid var(--accent); padding: 2px 8px; border-radius: 4px; }
+.project-info h3 { margin-top: 0.5rem; font-size: 1.2rem; }
+
+/* --- 6. FOOTER CTA --- */
+#footer-cta { padding: 5rem 5%; text-align: center; }
+.action-btn {
+    margin-top: 2rem;
+    padding: 1rem 3rem;
+    font-size: 1rem;
+    font-weight: 900;
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.action-btn:hover { transform: scale(1.05); box-shadow: 0 0 30px var(--accent); }
+
+/* --- 7. THE CONTACT MODAL (Hidden by default) --- */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Animation States */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal-content {
+    background: var(--bg-primary); /* Fallback */
+    background: rgba(20, 20, 20, 0.8);
+    border: 1px solid var(--glass-border);
+    padding: 3rem;
     border-radius: 20px;
-    padding: 15px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    position: relative;
+    transform: translateY(50px);
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0);
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem; right: 1.5rem;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--text-muted);
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255,255,255,0.05);
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 8px;
+}
+
+.copy-btn {
+    background: transparent;
+    border: 1px solid var(--text-muted);
     color: var(--text-main);
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.copy-btn:hover { background: var(--text-main); color: var(--bg-primary); }
+
+/* Animation Keyframes */
+@keyframes grain {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-5%, -5%); }
+    20% { transform: translate(-10%, 5%); }
+    30% { transform: translate(5%, -10%); }
+    40% { transform: translate(-5%, 15%); }
+    50% { transform: translate(-10%, 5%); }
+    60% { transform: translate(15%, 0); }
+    70% { transform: translate(0, 10%); }
+    80% { transform: translate(-15%, 0); }
+    90% { transform: translate(10%, 5%); }
+}
+
+@media (max-width: 768px) {
+    .main-title { font-size: 2.5rem; }
+    .scissor-icon { opacity: 0.02; bottom: 20%; right: -20%; }
 }
