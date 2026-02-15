@@ -9,40 +9,40 @@
 </head>
 <body>
 
-    <div class="background-decor">
-        <div class="vhs-overlay"></div>
-        <div class="skew-morphic-icon scissors">✂</div>
-        <div class="skew-morphic-icon vhs-text">PLAY ▶ 00:00:26</div>
-    </div>
-
-    <div class="watermark-logo">
-        <video autoplay muted loop playsinline src="your-logo.webm"></video>
+    <div class="background-stage">
+        <div class="vhs-static-overlay"></div> <div class="skew-container">
+            <svg class="scissor-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="6" cy="6" r="3"></circle>
+                <circle cx="6" cy="18" r="3"></circle>
+                <line x1="20" y1="4" x2="8.12" y2="15.88"></line>
+                <line x1="14.47" y1="14.48" x2="20" y2="20"></line>
+                <line x1="8.12" y1="8.12" x2="12" y2="12"></line>
+            </svg>
+            <div class="timecode">REC ● 00:00:26:14</div>
+        </div>
     </div>
 
     <nav class="glass-nav">
         <div class="nav-brand">YOHANNES <span class="thin">SHIFERAW</span></div>
         
         <div class="nav-right">
-            <div class="theme-switch-wrapper">
-                <label class="theme-switch" for="checkbox">
-                    <input type="checkbox" id="checkbox" />
-                    <div class="slider">
-                        <span class="icon sun">☀️</span>
-                        <span class="icon moon">🌙</span>
-                    </div>
+            <div class="knob-wrapper">
+                <input type="checkbox" id="theme-toggle">
+                <label for="theme-toggle" class="knob">
+                    <span class="indicator"></span>
                 </label>
             </div>
             
             <div class="nav-links">
                 <a href="#projects" class="tilt-button" data-tilt>PROJECTS</a>
-                <a href="#contact" class="tilt-button" data-tilt>CONTACT</a>
+                <button id="nav-contact-btn" class="tilt-button">CONTACT</button> 
             </div>
         </div>
     </nav>
 
     <main>
         <section class="hero">
-            <div class="profile-frame" data-tilt data-tilt-perspective="1000">
+            <div class="profile-frame" data-tilt data-tilt-glare data-tilt-max-glare="0.5">
                 <div class="profile-glow"></div>
                 <img src="https://github.com/your-username.png" alt="Yohannes Shiferaw" class="profile-img">
                 <div class="scanline"></div>
@@ -55,30 +55,57 @@
         </section>
 
         <section id="projects" class="project-grid">
-            
             <div class="project-card-container">
-                <div class="morphic-character char-long"></div> 
                 <div class="project-card" data-tilt>
                     <div class="video-container">
                         <img src="thumb1.jpg" alt="Project 1">
-                        <div class="play-overlay"><span>VIEW FILM</span></div>
+                        <div class="play-overlay"><span>▶ VIEW FILM</span></div>
                     </div>
                     <div class="project-info">
                         <span class="tag">LONG FORM</span>
                         <h3>Narrative Sequence</h3>
                     </div>
                 </div>
+                
+                <div class="project-card" data-tilt>
+                    <div class="video-container">
+                        <img src="thumb2.jpg" alt="Project 2">
+                        <div class="play-overlay"><span>▶ VIEW FILM</span></div>
+                    </div>
+                    <div class="project-info">
+                        <span class="tag">SHORT FORM</span>
+                        <h3>Social Media Cut</h3>
+                    </div>
+                </div>
             </div>
-
-            </section>
+        </section>
     </main>
 
-    <footer id="contact">
+    <footer id="footer-cta">
         <div class="contact-card" data-tilt>
             <h2>Ready to start your next project?</h2>
-            <a href="mailto:yohannes@email.com" class="email-btn">GET IN TOUCH</a>
+            <button id="footer-contact-btn" class="action-btn">GET IN TOUCH</button>
         </div>
     </footer>
+
+    <div id="contact-modal" class="modal-overlay">
+        <div class="modal-content glass-morphism">
+            <span class="close-modal">&times;</span>
+            <h2>Let's Edit.</h2>
+            <div class="contact-details">
+                <div class="contact-item">
+                    <span class="icon">📞</span>
+                    <span id="phone-number">+251 91 123 4567</span>
+                    <button class="copy-btn" onclick="copyText('phone-number')">Copy</button>
+                </div>
+                <div class="contact-item">
+                    <span class="icon">✉️</span>
+                    <span id="email-addr">yohannes@email.com</span>
+                    <button class="copy-btn" onclick="copyText('email-addr')">Copy</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
     <script src="script.js"></script>
