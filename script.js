@@ -1,14 +1,44 @@
-// 1. INITIALIZE VANILLA TILT
-// This targets all elements with 'data-tilt' in your HTML
+// 1. THEME SWITCHER LOGIC
+const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+const currentTheme = localStorage.getItem('theme');
+
+// Check for saved user preference
+if (currentTheme) {
+    document.documentElement.setAttribute('data-theme', currentTheme);
+
+    if (currentTheme === 'light') {
+        toggleSwitch.checked = true;
+    }
+}
+
+// Function to switch theme
+function switchTheme(e) {
+    if (e.target.checked) {
+        document.documentElement.setAttribute('data-theme', 'light');
+        localStorage.setItem('theme', 'light');
+    } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+    }
+}
+
+// Event Listener for the toggle
+toggleSwitch.addEventListener('change', switchTheme, false);
+
+
+// 2. INITIALIZE 3D TILT (Vanilla Tilt)
+// This targets your Project Cards, Buttons, AND the new Profile Frame
 VanillaTilt.init(document.querySelectorAll("[data-tilt]"), {
-    max: 15,          // Max tilt rotation (degrees)
-    speed: 400,       // Speed of the enter/exit transition
-    glare: true,      // Enables the 'reflection' effect
-    "max-glare": 0.3, // Sets maximum glare opacity
-    gyroscope: true,  // Allows tilting on mobile via device orientation
+    max: 15,            // Max tilt rotation
+    speed: 400,         // Speed of the enter/exit transition
+    glare: true,        // Adds the "glass" reflection
+    "max-glare": 0.3,   // Max opacity of glare
+    gyroscope: true,    // Mobile support
+    scale: 1.05         // Slight zoom on hover
 });
 
-// 2. SMOOTH SCROLLING FOR NAV LINKS
+
+// 3. SMOOTH SCROLLING
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -18,31 +48,21 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// 3. MORPHIC CHARACTER DYNAMICS (Optional)
-// This makes the glows follow the mouse slightly for extra depth
-const cards = document.querySelectorAll('.project-card-container');
 
-cards.forEach(card => {
-    const blob = card.querySelector('.morphic-character');
+// 4. DYNAMIC BACKGROUND PARALLAX (Optional but Cool)
+// This makes the "Scissors" and "VHS Text" move slightly when you scroll
+window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const scissors = document.querySelector('.scissors');
+    const vhsText = document.querySelector('.vhs-text');
     
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        // Move the glowing blob slightly toward the mouse
-        const moveX = (x - rect.width / 2) / 10;
-        const moveY = (y - rect.height / 2) / 10;
-        
-        blob.style.transform = `translate(calc(-50% + ${moveX}px), calc(-50% + ${moveY}px)) scale(1.1)`;
-    });
-    
-    card.addEventListener('mouseleave', () => {
-        blob.style.transform = `translate(-50%, -50%) scale(1)`;
-    });
+    // Parallax speed calculation
+    if(scissors) scissors.style.transform = `translateY(${scrolled * 0.2}px) rotate(-20deg)`;
+    if(vhsText) vhsText.style.transform = `translateY(${scrolled * 0.1}px) skewX(-15deg)`;
 });
 
-// 4. CONSOLE LOG BRANDING
-console.log("%c YOHANNES SHIFERAW %c Portfolio 2026 ", 
+
+// 5. DEVELOPER SIGNATURE
+console.log("%c YOHANNES SHIFERAW %c VIDEO EDITOR ", 
             "background: #00f2ff; color: #000; font-weight: bold; padding: 5px;", 
             "background: #333; color: #fff; padding: 5px;");
